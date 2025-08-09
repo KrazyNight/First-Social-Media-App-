@@ -10,7 +10,7 @@ export default function Widgets() {
     <>
       <div
         className="p-3
-    flex flex-col space-y-4 w-[400px] 
+    hidden lg:flex flex-col space-y-4 w-[400px] 
     "
       >
         <div
@@ -40,7 +40,7 @@ export default function Widgets() {
             What's happening
           </h1>
 
-          <div className="flex flex-col py-3">
+          <div className="flex flex-col py-3 space-y-1 ">
             <div
               className="flex justify-between
             text-[#536471]
@@ -67,7 +67,7 @@ export default function Widgets() {
             </span>
           </div>
 
-          <div className="flex flex-col py-3">
+          <div className="flex flex-col py-3 space-y-1 ">
             <div
               className="flex justify-between
             text-[#536471]
@@ -94,7 +94,7 @@ export default function Widgets() {
             </span>
           </div>
 
-          <div className="flex flex-col py-3">
+          <div className="flex flex-col py-3 space-y-1 ">
             <div
               className="flex justify-between
             text-[#536471]
@@ -121,7 +121,7 @@ export default function Widgets() {
             </span>
           </div>
 
-          <div className="flex flex-col py-3">
+          <div className="flex flex-col py-3 space-y-1 ">
             <div
               className="flex justify-between
             text-[#536471]
@@ -148,7 +148,7 @@ export default function Widgets() {
             </span>
           </div>
 
-          <div className="flex flex-col py-3">
+          <div className="flex flex-col py-3 space-y-1 ">
             <div
               className="flex justify-between
             text-[#536471]
