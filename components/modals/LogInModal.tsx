@@ -1,75 +1,41 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Modal } from "@mui/material";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { closeSignUpModal, openSignUpModal } from "@/redux/slices/modalSlice";
+import {
+  closeLogInModal,
+  closeSignUpModal,
+  openLogInModal,
+  openSignUpModal,
+} from "@/redux/slices/modalSlice";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/firebase";
-import { signInUser } from "@/redux/slices/userSlice";
 
-export default function SignUpModal() {
-  const [email, setEmail]= useState("");
-  const [password, setPassword] = useState("");
-
-
-
-
+export default function LogInModal() {
   const [showPassword, setShowPassord] = useState(false);
 
-  const isOpen = useSelector(
-    (state: RootState) => state.modals.signUpModalOpen
-  );
+  const isOpen = useSelector((state: RootState) => state.modals.logInModalOpen);
   const dispatch: AppDispatch = useDispatch();
 
-
-
-
-  async function handleSignUp() {
-    const userCredentials =await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password,
-    )
-  }
-
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (!currentUser) return
-      console.log(currentUser)
-      //Handle Redux Actions
-      dispatch(signInUser(
-        {
-        name: "",
-        username: currentUser.email!.split("@")[0],
-        email: currentUser.email,
-        uid: currentUser.uid, 
-      }
-    ))
-    })
-
-    return unsubscribe
-  }, [])
-
-
+  // console.log(isOpen)
 
   return (
     <>
       <button
-        className="w-full h-[48px] md:w-[88px] md:h-[40px] text-sm font-bold bg-white
-            rounded-full
+        className="
+            w-full h-[48px] md:w-[88px] md:h-[40px] text-md md:text-sm border-2 border-gray-1000
+            rounded-full text-white font-bold hover:bg-white hover:bg-opacity-25
+            transition 
             "
-        onClick={() => dispatch(openSignUpModal())}
+        onClick={() => dispatch(openLogInModal())}
       >
-        Sign Up
+        Log In
       </button>
 
       <Modal
         open={isOpen}
-        onClose={() => dispatch(closeSignUpModal())}
+        onClose={() => dispatch(closeLogInModal())}
         className="flex justify-center items-center"
       >
         <div
@@ -78,28 +44,18 @@ export default function SignUpModal() {
                 "
         >
           <XMarkIcon
-          className="w-7 mt-5 ml-5 cursor-pointer"
-          onClick={() => dispatch(closeSignUpModal())}
-          /> 
-          <div className="pt-10 pb-20 px-4 sm:px-20 ">
-            <h1 className="text-3xl font-bold mb-10 ">Create your account</h1>
+            className="w-7 mt-5 ml-5 cursor-pointer"
+            onClick={() => dispatch(closeLogInModal())}
+          />
+          <form className="pt-10 pb-20 px-4 sm:px-20 ">
+            <h1 className="text-3xl font-bold mb-10 ">Log in to Busy Bee</h1>
             <div className="w-full space-y-5 mb-10">
-              <input
-                className="w-full h-[54px] border border-gray-200
-              outline-none pl-3 rounded-[4px] focus:border-[#F4AF01]
-              transition"
-                placeholder="Name"
-                type="text"
-              />
-
               <input
                 className="w-full h-[54px] border border-gray-200
               outline-none pl-3 rounded-[4px] focus:border-[#F4AF01]
               transition"
                 placeholder="Email"
                 type="email"
-                onChange={(event) => setEmail(event.target.value)}
-                value={email}
               />
 
               <div
@@ -112,8 +68,6 @@ export default function SignUpModal() {
                   placeholder="Password"
                   type={showPassword ? "text" : "password"}
                   className="w-full h-full pl-3 outline-none "
-                  onChange={(event) => setPassword(event.target.value)}
-                  value={password}
                 />
 
                 <div
@@ -127,10 +81,10 @@ export default function SignUpModal() {
 
             <button
               className="bg-[#F4AF01] text-white h-[48px]
-                rounded-full shadow-md mb-5 w-full"
-                onClick={() => handleSignUp()}
+                rounded-full shadow-md mb-5 w-full
+                "
             >
-              Sign Up
+              Log In
             </button>
             <span className="mb-5 text-sm text-center block ">Or</span>
             <button
@@ -140,9 +94,7 @@ export default function SignUpModal() {
             >
               Log In as Guest
             </button>
-
-
-          </div>
+          </form>
         </div>
       </Modal>
     </>
