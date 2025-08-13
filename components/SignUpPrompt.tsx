@@ -7,13 +7,13 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/redux/store'
 
 export default function SignUpPrompt() {
-  const username = useSelector((state: RootState) => state.user.username)
+  const name = useSelector((state: RootState) => state.user.username)
 
-  console.log(username)
+  console.log(name)
 
 
   return (
-    !username &&
+    !name &&
     <>
     <div
     className='fixed w-full h-[80px] bg-[#F4AF01]

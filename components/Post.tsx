@@ -1,12 +1,23 @@
 import { ArrowUpTrayIcon, ChartBarIcon, ChatBubbleOvalLeftEllipsisIcon, HeartIcon } from "@heroicons/react/24/outline";
+import { DocumentData, Timestamp } from "firebase/firestore";
 import Image from "next/image";
 import React from "react";
+import Moment from "react-moment"
 
-export default function Post() {
+interface PostProps {
+  data: DocumentData
+}
+
+export default function Post({ data }: PostProps) {
   return (
     <>
       <div className="border-b border-gray-100 ">
-        <PostHeader />
+        <PostHeader
+        username={data.username}
+        name={data.name}
+        timestamp={data.timestamp}
+        text={data.text}
+        />
         <div className="ml-16 p-3 flex space-x-14 " >
             <div className="relative" >
                 <ChatBubbleOvalLeftEllipsisIcon 
@@ -51,7 +62,14 @@ export default function Post() {
   );
 }
 
-export function PostHeader() {
+interface PostHeaderProps {
+  username: string;
+  name: string;
+  timestamp: Timestamp;
+  text: string;
+}
+
+export function PostHeader({ username, name, timestamp, text }: PostHeaderProps) {
   return (
     <>
       <div className="flex p-3 space-x-5 ">
@@ -69,19 +87,28 @@ export function PostHeader() {
             inline-block whitespace-nowrap overflow-hidden text-ellipsis 
             max-w-[60px] min-[400px]:max-w-[100px] min-[500px]:max-w-[140px]
             sm:max-w-[160p]
-            ">Guest uhfg8ywehgfyuhewweiudj</span>
+            ">
+              {name}
+            </span>
             <span
             className="
             inline-block whitespace-nowrap overflow-hidden text-ellipsis 
             max-w-[60px] min-[400px]:max-w-[100px] min-[500px]:max-w-[140px]
             sm:max-w-[160p]
             "
-            >@guest101089498489498</span>
+            >@{username}</span>
             <span> · </span>
-            <span>a day ago</span>
+
+            {
+              timestamp &&
+            <Moment fromNow>
+            {timestamp.toDate()}
+            </Moment>
+            }
+            
           </div>
 
-          <span> uhejfiuewjfiuej </span>
+          <span> {text} </span>
         </div>
 
 

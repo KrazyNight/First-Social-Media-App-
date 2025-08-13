@@ -6,12 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeSignUpModal, openSignUpModal } from "@/redux/slices/modalSlice";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "@/firebase";
 import { signInUser } from "@/redux/slices/userSlice";
 
 export default function SignUpModal() {
-  const [email, setEmail]= useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
 
@@ -24,16 +25,31 @@ export default function SignUpModal() {
   );
   const dispatch: AppDispatch = useDispatch();
 
-
-
-
   async function handleSignUp() {
     const userCredentials =await createUserWithEmailAndPassword(
       auth,
       email,
       password,
-    )
+    );
+
+    await updateProfile(userCredentials.user, {
+      displayName: name,
+    });
+    
+    dispatch(signInUser({
+      name: userCredentials.user.displayName,
+      username: userCredentials.user.email!.split("@")[0],
+        email: userCredentials.user.email,
+        uid: userCredentials.user.uid,
+
+        
+      
+    }))
   }
+
+  async function handleGuestLogIn() {
+      await signInWithEmailAndPassword(auth, "guest@gmail.com", "12345678");
+    }
 
 
   useEffect(() => {
@@ -43,7 +59,7 @@ export default function SignUpModal() {
       //Handle Redux Actions
       dispatch(signInUser(
         {
-        name: "",
+        name: currentUser.displayName,
         username: currentUser.email!.split("@")[0],
         email: currentUser.email,
         uid: currentUser.uid, 
@@ -90,6 +106,8 @@ export default function SignUpModal() {
               transition"
                 placeholder="Name"
                 type="text"
+                onChange={(event) => setName(event.target.value) }
+                value={name}
               />
 
               <input
@@ -137,6 +155,7 @@ export default function SignUpModal() {
               className="bg-[#F4AF01] text-white h-[48px]
                 rounded-full shadow-md w-full
                 "
+                onClick={() => handleGuestLogIn()}
             >
               Log In as Guest
             </button>

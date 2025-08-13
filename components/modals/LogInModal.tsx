@@ -11,14 +11,25 @@ import {
 } from "@/redux/slices/modalSlice";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase";
+import { sign } from "crypto";
 
 export default function LogInModal() {
   const [showPassword, setShowPassord] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const isOpen = useSelector((state: RootState) => state.modals.logInModalOpen);
   const dispatch: AppDispatch = useDispatch();
 
-  // console.log(isOpen)
+  async function handleLogIn() {
+    await signInWithEmailAndPassword(auth, email, password);
+  }
+
+  async function handleGuestLogIn() {
+    await signInWithEmailAndPassword(auth, "guest@gmail.com", "12345678");
+  }
 
   return (
     <>
@@ -47,7 +58,7 @@ export default function LogInModal() {
             className="w-7 mt-5 ml-5 cursor-pointer"
             onClick={() => dispatch(closeLogInModal())}
           />
-          <form className="pt-10 pb-20 px-4 sm:px-20 ">
+          <div className="pt-10 pb-20 px-4 sm:px-20 ">
             <h1 className="text-3xl font-bold mb-10 ">Log in to Busy Bee</h1>
             <div className="w-full space-y-5 mb-10">
               <input
@@ -56,6 +67,8 @@ export default function LogInModal() {
               transition"
                 placeholder="Email"
                 type="email"
+                onChange={(event) => setEmail(event.target.value)}
+                value={email}
               />
 
               <div
@@ -68,6 +81,8 @@ export default function LogInModal() {
                   placeholder="Password"
                   type={showPassword ? "text" : "password"}
                   className="w-full h-full pl-3 outline-none "
+                  onChange={(event) => setPassword(event.target.value)}
+                  value={password}
                 />
 
                 <div
@@ -83,6 +98,7 @@ export default function LogInModal() {
               className="bg-[#F4AF01] text-white h-[48px]
                 rounded-full shadow-md mb-5 w-full
                 "
+              onClick={() => handleLogIn()}
             >
               Log In
             </button>
@@ -91,10 +107,11 @@ export default function LogInModal() {
               className="bg-[#F4AF01] text-white h-[48px]
                 rounded-full shadow-md w-full
                 "
+              onClick={() => handleGuestLogIn()}
             >
               Log In as Guest
             </button>
-          </form>
+          </div>
         </div>
       </Modal>
     </>
