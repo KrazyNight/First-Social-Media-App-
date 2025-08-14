@@ -51,7 +51,7 @@ export default function LogInModal() {
       >
         <div
           className="w-full h-full sm:w-[600px] sm:h-fit bg-white 
-                sm:rounded-xl
+                sm:rounded-xl outline-none
                 "
         >
           <XMarkIcon
