@@ -148,9 +148,9 @@ export default async function page({ params }: PageProps) {
             ))}
 
         </div>
+        <Widgets />
       </div>
 
-      <Widgets />
 
       <SignUpPrompt />
     </>
