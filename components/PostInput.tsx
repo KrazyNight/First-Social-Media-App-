@@ -1,6 +1,6 @@
 'use client'
 import { db } from '@/firebase';
-import { closeCommentModal } from '@/redux/slices/modalSlice';
+import { closeCommentModal, openLogInModal } from '@/redux/slices/modalSlice';
 import { RootState } from '@/redux/store';
 import { CalendarIcon, ChartBarIcon, FaceSmileIcon, MapPinIcon, PhotoIcon } from '@heroicons/react/24/outline'
 import { addDoc, arrayUnion, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
@@ -21,6 +21,11 @@ export default function PostInput({ insideModal}: PostInputProps) {
   const dispatch = useDispatch()
 
   async function sendPost() {
+    if(!user.username) {
+      dispatch(openLogInModal())
+      return
+    }
+    
     await addDoc(collection(db, 'posts'), {
       text: text,
       name: user.name,
